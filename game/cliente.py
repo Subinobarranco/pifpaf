@@ -15,9 +15,14 @@ while True:
 
 #TCP for the game
 print("saiu de loop")
+cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+cli.connect(addr)
+cli.sendall(b"conectados?")
+#cli.shutdown(socket.SHUT_WR)
 while True:
-    cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    cli.connect(addr)
-    connected = True
-    print("Pronto para paertida")
+    dado=cli.recv(2048)
+    if not dado:
+        break
+    print(dado)
+#cli.close()
 

@@ -18,12 +18,16 @@ while True:
 #TCP for the game
 ser=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ser.bind(('', 54545))
-ser.listen()
+ser.settimeout(10)
+ser.listen(1)
 conn, addr=ser.accept()
 with conn:
     print('conectado com ' + addr[0] + ':' + str(addr[1]))
+    #conn.sendall(b'conectou')
     while True:
         dado = conn.recv(2048)
+        dado= b'pronto para partida'
+        conn.sendall(dado)
         if not dado:
             break
     dado= b'pronto para partida'

@@ -33,3 +33,4 @@ if addr=='localhost':
 else
     cli = cliente.main(addr)
 
+#https://pense-python.caravela.club/18-heranca/01-objetos-card.html

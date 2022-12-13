@@ -29,8 +29,7 @@ for x in range(3):
 print("saiu de loop")
 
 if addr=='localhost':
-    ser = server.main(addr)
+    mesa(addr)
 else
-    cli = cliente.main(addr)
+    game(addr)
 
-#https://pense-python.caravela.club/18-heranca/01-objetos-card.html

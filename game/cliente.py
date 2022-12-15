@@ -1,5 +1,5 @@
 #TCP for the game
-import socket, random
+import socket, random, Jogo
 
 def game(addr):
     cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

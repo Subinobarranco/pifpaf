@@ -50,7 +50,6 @@ class Baralho:
             return
         return self.cartas.pop()
 
-
 class Player:
     def __init__(self, nome):
         self.vitorias = 0
@@ -72,19 +71,20 @@ class Game:
         print(w)
 
     def draw(self, p1n, p1c, p2n, p2c):
-        d = "{} drew {} {} drew {}"
+        d = "{} drew {} {} drew {}\n"
         d = d.format(p1n, p1c, p2n, p2c)
         print(d)
 
     def play_game(self):
+        z=0
         cartas = self.baralho.cartas
         print("beginning War!")
         while len(cartas) >= 2:
-            m = "q to quit. Any " + \
-                "key to play:"
-            response = input(m)
-            if response == 'q':
-                break
+            z=z+1
+            #m = "q to quit. Any key to play:"
+            #response = input(m)
+            #if response == 'q':
+            #    break
             p1c = self.baralho.rm_carta()
             p2c = self.baralho.rm_carta()
             p1n = self.p1.nome
@@ -100,7 +100,7 @@ class Game:
         vit = self.vencedor(self.p1,
                          self.p2)
         print("War is over.{} wins"
-              .format(vit))
+              .format(vit) + "voltas " + format(z))
 
     def vencedor(self, p1, p2):
         if p1.vitorias > p2.vitorias:

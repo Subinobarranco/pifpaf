@@ -1,5 +1,10 @@
 from random import shuffle
 
+def codifi(v,n):
+    return Carta(v,n)
+
+def decodi(c2):    
+    return c2.valor,c2.naipe
 
 class Carta:
     naipes = ["Paus", "Espadas", "Ouros", "Copas"]
@@ -34,7 +39,7 @@ class Carta:
     def __repr__(self):
         v = self.valores[self.valor] + " de " + self.naipes[self.naipe]
         return v
-
+        
 
 class Baralho:
 

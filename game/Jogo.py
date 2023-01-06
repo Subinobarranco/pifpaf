@@ -28,14 +28,20 @@ def main():
     nome2 = input("p2 name ")
     baralhos = Util.Baralho()
     baralho= baralhos.cartas
+    players = []
     p1 = Util.Player(nome1)
     p2 = Util.Player(nome2)
+    players.append(p1)
+    players.append(p2)
     z=0
     p1c=[]
     p2c=[]
     monte=[]
 
     maoinicial(baralho,baralhos,p1c,p2c)
+
+    players[0].cartas=p1c
+    players[1].cartas=p2c
 
     #comeca jogo
     print("beginning War!")
@@ -50,23 +56,23 @@ def main():
         
         #comprar do baralho e descartar
         elif response == 'c':
-            p1c.append(baralhos.rm_carta())
+            players[0].cartas.append(baralhos.rm_carta())
             p2c.append(baralhos.rm_carta())
             z=z+1
-            monte.append(escolha(p1c))
+            monte.append(escolha(players[0].cartas))
             monte.append(escolha(p2c))
         
         #pegar do monte e descartar
         elif response == 'v':
-            p1c.append(monte.pop())
+            players[0].cartas.append(monte.pop())
             p2c.append(monte.pop())
-            monte.append(escolha(p1c))
+            monte.append(escolha(players[0].cartas))
             monte.append(escolha(p2c))
             
         #bater
         elif response == 'b':
             print('\n')
-            print(p1c)
+            print(players[0].cartas)
             print('\n')
             print(p2c)
             break
@@ -75,23 +81,23 @@ def main():
         p1n = p1.nome
         p2n = p2.nome
         #self.draw(p1n, p1c, p2n, p2c)
-        if p1c > p2c:
+        if players[0].cartas > p2c:
             print('vitoria p1')
         else:
             print('vitorias p2')
 
                         
     print("War is over.{} wins voltas " + format(z))
-    print(p1c[1])
+    print(players[0].cartas[1])
     print('\n')
-    v, n=Util.decodi(p1c[1])
+    v, n=Util.decodi(players[0].cartas[1])
     print(v)
     print(n)
     print('\n')
-    print(p1c[1])
-    print(p1c[1].valor)
-    print(p1c[1].naipe)
-    print(Util.Carta((p1c[1].valor),(p1c[1].naipe)))
+    print(players[0].cartas[1])
+    print(players[0].cartas[1].valor)
+    print(players[0].cartas[1].naipe)
+    print(Util.Carta((players[0].cartas[1].valor),(players[0].cartas[1].naipe)))
     print(Util.codifi(v,n))
     
 main()

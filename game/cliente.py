@@ -17,7 +17,7 @@ def escolha(pc):
 
 def game(addr):
     cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    cli.connect(addr)
+    cli.connect((addr,54545))
     teste=b"conectados?"
     cli.sendall(teste)
     cli.shutdown(socket.SHUT_WR)

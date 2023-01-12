@@ -1,6 +1,7 @@
 #UDP server responds to broadcast packets
 #you can have more than one instance of these running
 import socket, Util
+from time import sleep
 
 def textver(baralho, monte):
     if len (baralho)>=2 and len(monte)>=2:
@@ -23,15 +24,33 @@ def maoinicial(baralho,baralhos,p1c,p2c):
             p1c.append(baralhos.rm_carta())
             p2c.append(baralhos.rm_carta())
 
-def atualizarmonte(cart):
-    #envia carta para todos players
-    pass
+def atualizarmonte(conn, pc):
+    conn.sendall(b'monte')
+    sleep(1)
+    valorenviar,naipenviar=Util.decodi(pc)
+    conn.sendall(str(valorenviar).encode())
+    sleep(1)
+    conn.sendall(str(naipenviar).encode())
+    sleep(1)
 
-def atualizaremovermonte():
-    pass
+def atualizaremovermonte(conn,pc):
+    conn.sendall(b'monteremover')
+    sleep(1)
+    valorenviar,naipenviar=Util.decodi(pc)
+    conn.sendall(str(valorenviar).encode())
+    sleep(1)
+    conn.sendall(str(naipenviar).encode())
+    sleep(1)
 
-def attodos(adress,p1c):
-    pass
+def attodos(conn, addr, p2c):
+    while p2c:
+    #for x in range(8):
+        print(p2c)
+        valorenviar,naipenviar=Util.decodi(p2c.pop())
+        conn.sendall(str(valorenviar).encode())
+        #sleep(1)
+        conn.sendall(str(naipenviar).encode())
+        #sleep(1)
 
 def mesa(procura=1):
     address = ('', 54545)
@@ -71,15 +90,19 @@ def mesa(procura=1):
     #TCP for the game
     ser=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     ser.bind(('', 54545))
-    ser.settimeout(30)
-    ser.listen(1)
+    ser.settimeout(100)
+    ser.listen(3)
     conn, addr=ser.accept()
+    macht=True
     with conn:
         #criar mao de players
         maoinicial(baralho,baralhos,p1c,p2c)
         players[0].cartas=p1c
-        players[1].cartas=p2c
-        #attodos(addr,players[1].cartas=p2c)
+        #players[1].cartas=p2c
+        conn.sendall(b'cartas a enviar')
+        sleep(1)
+        #mao a ser enviado
+        attodos(conn, addr,p2c)
         print('conectado com ' + addr[0] + ':' + str(addr[1]))
         #conn.sendall(b'conectou')
         while True:
@@ -91,14 +114,16 @@ def mesa(procura=1):
                 #comprar do baralho e descartar
                 if response == 'c':
                     players[vezplayer].cartas.append(baralhos.rm_carta())
-                    monte.append(escolha(players[vezplayer].cartas))
-                    atualizarmonte()
+                    pc=escolha(players[vezplayer].cartas)
+                    monte.append(pc)
+                    atualizarmonte(conn,pc)
                 
                 #pegar do monte e descartar
                 elif response == 'v':
                     players[vezplayer].cartas.append(monte.pop())
-                    monte.append(escolha(players[vezplayer].cartas))
-                    atualizarmonte()
+                    pc=escolha(players[vezplayer].cartas)
+                    monte.append(pc)
+                    atualizaremovermonte(conn,pc)
                     
                 #bater
                 elif response == 'b':
@@ -106,8 +131,14 @@ def mesa(procura=1):
                     print(players[vezplayer].cartas)
                     break
             else:
+                conn.sendall(b'resposta')
+                sleep(1)
                 conn.sendall(m.encode())
-                dado = conn.recv(2048)
+                #sleep(5)
+                while True:
+                    dado = conn.recv(2048)
+                    if dado:
+                        break
                 response=dado.decode()
 
                 #comprar do baralho e descartar
@@ -118,19 +149,22 @@ def mesa(procura=1):
 
                     valoreceber=int(conn.recv(2048).decode())
                     naipeber=int(conn.recv(2048).decode())
-                    monte.append(Util.Carta(valoreceber,naipeber))
-                    atualizarmonte()
+
+                    pc=Util.Carta(valoreceber,naipeber)
+                    monte.append(pc)
+                    atualizarmonte(conn,pc)
                 
                 #pegar do monte e descartar
                 elif response == 'v':
-                    valorenviar,naipenviar=Util.decodi(monte.pop())
-                    conn.sendall(str(valorenviar).encode())
-                    conn.sendall(str(naipenviar).encode())
-
-                    valoreceber=int(conn.recv(2048).decode())
+                    monte.pop()
+                    while True:
+                        valoreceber=int(conn.recv(2048).decode())
+                        if valoreceber:
+                            break
                     naipeber=int(conn.recv(2048).decode())
-                    monte.append(Util.Carta(valoreceber,naipeber))
-                    #atualizaremovermonte()
+                    pc=Util.Carta(valoreceber,naipeber)
+                    monte.append(pc)
+                    atualizaremovermonte(conn,pc)
                     
                 #bater
                 elif response == 'b':
@@ -146,20 +180,24 @@ def mesa(procura=1):
             
             
             #coneçao
+            '''
             dado = conn.recv(2048)
             dado= b'pronto para partida'
             conn.sendall(dado)
             if not dado:
                 break
+            '''
             
-            if vezplayer==3:
+            if vezplayer==1:
                 vezplayer=0
             else:
                 vezplayer=vezplayer+1
-                
+
+        '''        
         dado= b'pronto para partida'
         conn.sendall(dado)
         #conn.close()
+        '''
 
     print('\nBatido ')
 

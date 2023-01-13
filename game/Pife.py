@@ -9,27 +9,21 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
 data = b'Tem partida?'
-client_socket.settimeout(2)
+client_socket.settimeout(10)
 
-for x in range(3):
-    client_socket.sendto(data, address)
+client_socket.sendto(data, address)
+print('Tentando conectar')
+
+try:
     print('Tentando conectar')
-    try:
-        while True:
-            recv_data, addr = client_socket.recvfrom(2048)
-            print(addr,recv_data)
-            if not addr:
-                break
-    except:
-        addr=('localhost', 54545)
-        pass
-
-
-#TCP for the game
+    recv_data, addr = client_socket.recvfrom(2048)
+except:
+    addr=''
+    
 print("saiu de loop")
 
-if addr=='localhost':
-    mesa(addr)
-else
-    game(addr)
+if addr=='':
+    server.mesa()
+else:
+    cliente.game(addr)
 

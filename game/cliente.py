@@ -9,7 +9,7 @@ def escolha(pc):
 
 def game(addr):
     cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    cli.connect((addr,54545))
+    cli.connect(addr)
     #teste=b"conectados?"
     #cli.sendall(teste)
     #cli.shutdown(socket.SHUT_WR)
@@ -25,27 +25,33 @@ def game(addr):
         
         if dado=='cartas a enviar':
             while len(mao) <= 8:
-                valoreceber=int(cli.recv(2048).decode())
+                while True:
+                    valoreceber=int(cli.recv(2048).decode())
+                    if valoreceber:
+                        break
                 naipeber=int(cli.recv(2048).decode())
                 mao.append(Util.Carta(valoreceber,naipeber))
+                #print(mao)
             print(mao)
 
         if dado=='monte':
             valoreceber=int(cli.recv(2048).decode())
             naipeber=int(cli.recv(2048).decode())
             monte.append(Util.Carta(valoreceber,naipeber))
-            print(monte)
+            #print(monte)
 
         if dado=='monteremover':
             monte.pop()
             valoreceber=int(cli.recv(2048).decode())
             naipeber=int(cli.recv(2048).decode())
             monte.append(Util.Carta(valoreceber,naipeber))
-            print(monte)
+            #print(monte)
             
         if dado=='resposta':
             dado=(cli.recv(2048).decode())
-            
+            print('\n\n\n\n')
+            if monte:
+                print(monte[-1])
             m=dado
             response=input(m)
             #comprar do baralho e descartar
@@ -87,7 +93,7 @@ def game(addr):
         #cli.send(b'cliente')
         #if not dado:
             #break
-        print(dado)
+        #print(dado)
         print('\n')
         #cli.close()
             

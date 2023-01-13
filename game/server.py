@@ -48,7 +48,7 @@ def attodos(conn, addr, p2c):
         print(p2c)
         valorenviar,naipenviar=Util.decodi(p2c.pop())
         conn.sendall(str(valorenviar).encode())
-        #sleep(1)
+        sleep(1)
         conn.sendall(str(naipenviar).encode())
         #sleep(1)
 
@@ -109,6 +109,9 @@ def mesa(procura=1):
             #escolhas do que fazer e verificar quem joga
             m=textver(baralho,monte)
             if vezplayer==0:
+                print('\n\n\n\n')
+                if monte:
+                    print(monte[-1])
                 response=input(m)
 
                 #comprar do baralho e descartar

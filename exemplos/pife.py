@@ -1,5 +1,6 @@
 #
-https://www.youtube.com/watch?v=dY1R92kXhVo
+#https://www.youtube.com/watch?v=dY1R92kXhVo
+#http://www.inf.ufsc.br/~bosco.sobral/ensino/ine5645/coulouris.pdf
 #TCP/IPv4
 # Echo server program
 import socket

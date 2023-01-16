@@ -5,5 +5,3 @@ server.mesa(0)
 #cliente.game("localhost")
 
 
-#https://thecleverprogrammer.com/2020/10/04/card-game-with-python/
-#https://pense-python.caravela.club/18-heranca/01-objetos-card.html

@@ -9,7 +9,7 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
 data = b'Tem partida?'
-client_socket.settimeout(10)
+client_socket.settimeout(15)
 
 client_socket.sendto(data, address)
 print('Tentando conectar')

@@ -45,7 +45,8 @@ def atualizaremovermonte(conn,pc):
 def attodos(conn, addr, p2c):
     while p2c:
     #for x in range(8):
-        print(p2c)
+        print('cartas restantes a serem enviadas ')
+        print(len(p2c))
         valorenviar,naipenviar=Util.decodi(p2c.pop())
         conn.sendall(str(valorenviar).encode())
         sleep(1)
@@ -204,8 +205,4 @@ def mesa(procura=1):
 
     print('\nBatido ')
 
-    #seguir partida
-    #monte ser atualizado em todos em todos os casos
-    #ultima carta para vencer, receber todos as cartas e repasar a todos
-    #comandos de acontecimentos: c9-bater c8-monte c7-comprar
-    #envio de carta index numero segundo index naipe
+

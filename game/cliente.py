@@ -13,10 +13,11 @@ def game(addr):
     #teste=b"conectados?"
     #cli.sendall(teste)
     #cli.shutdown(socket.SHUT_WR)
-    cli.settimeout(100)
+    cli.settimeout(90)
     mao=[]
     monte=[]
     while True:
+        cli.settimeout(150)
         #recebe o que vai acontecer
         while True:
             dado=(cli.recv(2048).decode())
@@ -24,11 +25,12 @@ def game(addr):
                 break
         
         if dado=='cartas a enviar':
+            cli.settimeout(19)
             while len(mao) <= 8:
-                while True:
-                    valoreceber=int(cli.recv(2048).decode())
-                    if valoreceber:
-                        break
+                #while True:
+                valoreceber=int(cli.recv(2048).decode())
+                    #if valoreceber:
+                        #break
                 naipeber=int(cli.recv(2048).decode())
                 mao.append(Util.Carta(valoreceber,naipeber))
                 #print(mao)
@@ -85,9 +87,6 @@ def game(addr):
                 print(p2c)
                 break
             
-        #recebe o que pode fazer
-        #response=input(m)
-        #envia resposta
         
         #dado=cli.recv(2048)
         #cli.send(b'cliente')

@@ -112,6 +112,7 @@ def mesa(procura=1):
             if vezplayer==0:
                 print('\n\n\n\n')
                 if monte:
+                    print('monte->')
                     print(monte[-1])
                 response=input(m)
 
@@ -133,6 +134,18 @@ def mesa(procura=1):
                 elif response == 'b':
                     print('\n')
                     print(players[vezplayer].cartas)
+                    conn.sendall(b'terminado')
+                    while players[vezplayer].cartas:
+                    #for x in range(8):
+                        print('cartas restantes a serem enviadas ')
+                        print(len(players[vezplayer].cartas))
+                        valorenviar,naipenviar=Util.decodi(players[vezplayer].cartas.pop())
+                        sleep(1)
+                        conn.sendall(str(valorenviar).encode())
+                        #sleep(1)
+                        conn.sendall(str(naipenviar).encode())
+                        #sleep(1)
+                    
                     break
             else:
                 conn.sendall(b'resposta')
@@ -173,9 +186,15 @@ def mesa(procura=1):
                 #bater
                 elif response == 'b':
                     print('\n')
-                    print(p1c)
-                    print('\n')
-                    print(p2c)
+                    print('batido por outro player')
+                    while len(players[vezplayer].carta) <= 8:
+                        #while True:
+                        valoreceber=int(conn.recv(2048).decode())
+                            #if valoreceber:
+                                #break
+                        naipeber=int(conn.recv(2048).decode())
+                        players[vezplayer].carta.append(Util.Carta(valoreceber,naipeber))
+                    print(players[vezplayer].carta)
                     break
             
             #fechar

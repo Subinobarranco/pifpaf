@@ -1,4 +1,5 @@
 import socket, Util
+from time import sleep
 
 def escolha(pc):
     for x in range(len(pc)):
@@ -23,6 +24,20 @@ def game(addr):
             dado=(cli.recv(2048).decode())
             if dado:
                 break
+
+        if dado=='terminado':
+            print('batido por outro player')
+            batid=[]
+            cli.settimeout(19)
+            while len(batid) <= 8:
+                #while True:
+                valoreceber=int(cli.recv(2048).decode())
+                    #if valoreceber:
+                        #break
+                naipeber=int(cli.recv(2048).decode())
+                batid.append(Util.Carta(valoreceber,naipeber))
+            print(batid)
+            break
         
         if dado=='cartas a enviar':
             cli.settimeout(19)
@@ -53,6 +68,7 @@ def game(addr):
             dado=(cli.recv(2048).decode())
             print('\n\n\n\n')
             if monte:
+                print('monte->')
                 print(monte[-1])
             m=dado
             response=input(m)
@@ -81,10 +97,17 @@ def game(addr):
                     
             #bater
             elif response == 'b':
+                cli.sendall(b'b')
                 print('\n')
-                print(p1c)
-                print('\n')
-                print(p2c)
+                print(mao)
+                while len(mao):
+                    print('cartas restantes a enviar')
+                    print(len(mao))
+                    valorenviar,naipenviar=Util.decodi(mao.pop())
+                    cli.sendall(str(valorenviar).encode())
+                    sleep(1)
+                    cli.sendall(str(naipenviar).encode())
+                    #sleep(1)
                 break
             
         

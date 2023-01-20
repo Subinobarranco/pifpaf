@@ -1,3 +1,8 @@
-codigo pife todos codigos achados ate o momento. 
-cliente e servidor em efetivo
-https://realpython.com/python-sockets/#socket-api-overview
+pasta game com arquivos para
+    cliente contendo todo codigo fonte para funcionamento do cliente
+    server codigo para rodar servidor
+    util contendo classe e algumas funcoes
+    testeser para executar o servidor
+    testecli para executar o cliente no localhost
+    pife para executar uma busca broadcast por servidores para inicia o cliente 
+        e caso nao achar iniciar servidor
